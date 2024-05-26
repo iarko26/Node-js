@@ -1,0 +1,116 @@
+test> show databases
+Cars    72.00 KiB
+admin   40.00 KiB
+config  72.00 KiB
+local   40.00 KiB
+test> use cars 
+switched to db cars
+cars> use db
+switched to db db
+db> db.createCollection("users")
+{ ok: 1 }
+db> show collections
+users
+db> show databases
+Cars    72.00 KiB
+admin   40.00 KiB
+config  72.00 KiB
+db       8.00 KiB
+local   40.00 KiB
+db> db.users.insertOne({id:1,username:'arnob26',professsion:'student'});
+{
+  acknowledged: true,
+  insertedId: ObjectId('66477d4e79b6d7091ecdcdf6')
+}
+db> db.users.find()
+[
+  {
+    _id: ObjectId('66477d4e79b6d7091ecdcdf6'),
+    id: 1,
+    username: 'arnob26',
+    professsion: 'student'
+  }
+]
+db> db.users.updateOne({username:'arnob'},{$set:{profession:'coder'}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+db>  db.users.updateOne({username:'arnob26'},{$set:{profession:'coder'}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+db> db.users.find();
+[
+  {
+    _id: ObjectId('66477d4e79b6d7091ecdcdf6'),
+    id: 1,
+    username: 'arnob26',
+    professsion: 'student',
+    profession: 'coder'
+  }
+]
+db>  db.users.updateOne({username:'arnob26'},{$set:{profession:'enginner'}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+db> db.users.find();
+[
+  {
+    _id: ObjectId('66477d4e79b6d7091ecdcdf6'),
+    id: 1,
+    username: 'arnob26',
+    professsion: 'student',
+    profession: 'enginner'
+  }
+]
+db> db.users.updateOne({id:1},{$set:{username:'arnob05'}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+db> db.users.find();
+[
+  {
+    _id: ObjectId('66477d4e79b6d7091ecdcdf6'),
+    id: 1,
+    username: 'arnob05',
+    professsion: 'student',
+    profession: 'enginner'
+  }
+]
+db> db.users.deleteOne({profession:'engineer'});
+{ acknowledged: true, deletedCount: 0 }
+db> db.users.find();
+[
+  {
+    _id: ObjectId('66477d4e79b6d7091ecdcdf6'),
+    id: 1,
+    username: 'arnob05',
+    professsion: 'student',
+    profession: 'enginner'
+  }
+]
+db> db.users.deleteMany({profession:'student'});
+{ acknowledged: true, deletedCount: 0 }
+db> db.users.deleteOne({profession:'student'});
+{ acknowledged: true, deletedCount: 0 }
+db> db.users.deleteOne({id:1} );
+{ acknowledged: true, deletedCount: 1 }
+db> db.users.find();
+
+db>

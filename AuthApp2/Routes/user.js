@@ -19,4 +19,6 @@ router.get('/Admin',auth,isAdmin,(req,res)=>{
         message:"Welcome to Admin Dashboard"
     })
 })
+
+
 module.exports=router;

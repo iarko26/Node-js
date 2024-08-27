@@ -5,7 +5,12 @@ require('dotenv').config();
 const PORT=process.env.PORT || 4000;
 app.use(express.json());
 
-app.use(fileUpload());
+app.use(fileUpload(
+    {
+        useTempFiles : true,
+        tempFileDir : '/tmp/'
+    }
+));
 require('./config/database')();
 require('./config/cloudinary')();
 

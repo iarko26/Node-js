@@ -32,12 +32,10 @@ function isSupported(type, supportedFormats) {
     return supportedFormats.includes(type);
 }
 
-async function uploadCloudinary(file, folder,quality) {
+async function uploadCloudinary(file, folder) {
     
     const options = { folder: folder };
-    if(quality){
-        options.quality=quality;
-    }
+
     options.resource_type = 'auto';
 
     return await cloudinary.uploader.upload(file.tempFilePath, options);
@@ -139,52 +137,5 @@ const vidoeuploader=async(req,res)=>{
     }
 
 }
-const imageSizer=async(req,res)=>{
-    try {
-        // Data fetch
-        const { name, tags, email } = req.body;
-        console.log(name, tags, email);
-        const file = req.files.imagefile;
-        console.log(file);
 
-        // Validation
-        const supportedFormats = ["jpg", "jpeg", "png"];
-        const filetype = file.name.split('.')[1].toLowerCase();
-        console.log(filetype);
-
-        if (!isSupported(filetype, supportedFormats)) {
-            return res.status(400).json({
-                success: false,
-                message: 'File format not supported'
-            });
-        }
-
-        // Upload image to Cloudinary
-        const response = await uploadCloudinary(file, 'Nodejs',20);
-        console.log(response);
-
-        // Save data to database
-        const newfile = await File.create({
-            name,
-            imageurl: response.secure_url,
-            tags,
-            email,
-        });
-
-        // Send final response
-        res.status(200).json({
-            success: true,
-            message: "Image uploaded successfully",
-            imageurl: response.secure_url,
-        });
-
-    }catch (error) {
-        console.log(error);
-        res.status(500).json({
-            success: false,
-            message: 'Image resize failed'
-        });
-    }
-}
-
-module.exports = { localfile, imageuploader,vidoeuploader,imageSizer };
+module.exports = { localfile, imageuploader,vidoeuploader };
